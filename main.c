@@ -1,0 +1,171 @@
+
+#include <stdio.h>
+
+struct Product
+{
+    int id;
+    char name[20];
+    float price;
+    int quantity;
+};
+
+// Function to display products
+void displayProducts(struct Product p[], int n)
+{
+    int i;
+
+    printf("\n------ PRODUCT CATALOGUE ------\n");
+    printf("ID\tProduct\t\tPrice\n");
+
+    for (i = 0; i < n; i++)
+    {
+        printf("%d\t%-15s Rs. %.2f\n",
+               p[i].id, p[i].name, p[i].price);
+    }
+}
+
+// Function to display cart
+void displayCart(struct Product cart[], int count)
+{
+    int i;
+    float total = 0;
+
+    printf("\n------ YOUR CART ------\n");
+
+    if (count == 0)
+    {
+        printf("Your cart is empty.\n");
+        return;
+    }
+
+    for (i = 0; i < count; i++)
+    {
+        printf("%s x %d = Rs. %.2f\n",
+       cart[i].name,
+       cart[i].quantity,
+       cart[i].price * (float)cart[i].quantity);
+
+total = total + cart[i].price * (float)cart[i].quantity;    }
+
+    printf("Total Amount: Rs. %.2f\n", total);
+}
+
+// Main function
+int main()
+{
+    struct Product products[5] = {
+        {1, "Laptop", 45000, 0},
+        {2, "Headphones", 1500, 0},
+        {3, "Mouse", 500, 0},
+        {4, "Keyboard", 1000, 0},
+        {5, "USB Cable", 200, 0}
+    };
+
+    struct Product cart[5];
+
+    // Pointer to track the cart
+    struct Product *ptr = cart;
+
+    int choice, quantity;
+    int count = 0, i;
+    float total, discount, finalAmount;
+
+    do
+    {
+        printf("\n===== E-COMMERCE SHOPPING CART =====\n");
+        printf("1. Display Products\n");
+        printf("2. Add Product to Cart\n");
+        printf("3. View Cart\n");
+        printf("4. Checkout\n");
+        printf("5. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+                displayProducts(products, 5);
+                break;
+
+            case 2:
+                displayProducts(products, 5);
+
+                printf("\nEnter Product ID: ");
+                scanf("%d", &i);
+
+                if (i < 1 || i > 5)
+                {
+                    printf("Invalid Product ID!\n");
+                    break;
+                }
+
+                printf("Enter Quantity: ");
+                scanf("%d", &quantity);
+
+                if (quantity <= 0)
+                {
+                    printf("Quantity must be greater than zero.\n");
+                    break;
+                }
+
+                if (count < 5)
+                {
+                    ptr[count] = products[i - 1];
+                    ptr[count].quantity = quantity;
+                    count++;
+
+                    printf("Product added to cart successfully!\n");
+                }
+                else
+                {
+                    printf("Cart is full!\n");
+                }
+
+                break;
+
+            case 3:
+                displayCart(cart, count);
+                break;
+
+            case 4:
+                if (count == 0)
+                {
+                    printf("Your cart is empty!\n");
+                    break;
+                }
+
+                total = 0;
+
+                for (i = 0; i < count; i++)
+                {
+total = total +
+        cart[i].price * (float)cart[i].quantity;
+                }
+
+                if (total >= 5000)
+discount = total * 0.10f;
+                else
+                    discount = 0;
+
+                finalAmount = total - discount;
+
+                printf("\n------ BILL ------\n");
+                printf("Total Amount: Rs. %.2f\n", total);
+                printf("Discount: Rs. %.2f\n", discount);
+                printf("Final Amount: Rs. %.2f\n", finalAmount);
+                printf("Thank you for shopping!\n");
+
+                break;
+
+            case 5:
+                printf("Thank you! Visit again.\n");
+                break;
+
+            default:
+                printf("Invalid choice! Try again.\n");
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
